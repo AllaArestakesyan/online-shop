@@ -12,13 +12,7 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
     name: string;
 
     @ApiProperty()
-    quantityResultsPurchases: number;
-
-    @ApiProperty()
-    priceForSimplePurchase: string;
-
-    @ApiProperty()
-    priceForWholesalePurchase: string;
+    price: number;
 
     @ApiProperty()
     description: string;

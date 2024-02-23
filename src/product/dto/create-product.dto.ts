@@ -20,9 +20,6 @@ export class CreateProductDto {
 
     @ApiProperty()
     category: number;
-    
-    @ApiProperty()
-    colors: string[];
 
     @ApiProperty()
     sizes:Size[];

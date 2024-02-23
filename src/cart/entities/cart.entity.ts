@@ -13,9 +13,6 @@ export class Cart {
     @Column()
     quantity: number;
 
-    @Column()
-    price: number;
-
     @ManyToOne(() => Product, (product) => product.cart,
         { onDelete: "CASCADE", onUpdate: "CASCADE" })
     product: Product;

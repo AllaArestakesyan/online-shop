@@ -22,7 +22,7 @@ export class CartService {
   ) { }
 
   async create(createCartDto: CreateCartDto, userId: number) {
-    const { productId, quantity, colorId, sizeId }: any = createCartDto;
+    const { productId, quantity,  sizeId }: any = createCartDto;
     const user = await this.userRepository.findOneBy({ id: userId });
     const product = await this.productRepository.findOneBy({ id: productId });
     if (user && product) {
@@ -37,14 +37,14 @@ export class CartService {
         const x = await this.cartRepository.findOneBy({
           product,
           user,
+          size:productSize
         })
         if (!x) {
           const wish = this.cartRepository.create({
             product,
             user,
             quantity,
-            size:productSize,
-            price:product.price
+            size:productSize
           });
           return this.cartRepository.save(wish);
         } else {
@@ -53,7 +53,7 @@ export class CartService {
           })
         }
       } else {
-        throw new NotFoundException('data is incorrect');
+        throw new NotFoundException(!productSize?'productSize does not exist':productSize.product.id != product.id?"productSize and product do not match":"quantity is exceeded");
       }
     } else {
       throw new NotFoundException('user or product not found');

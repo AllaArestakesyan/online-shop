@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { Role } from 'src/user/role/enum.role';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,6 +18,7 @@ export class CartController {
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս product-ը ուղաևկել cart" })
   @Post()
   async create(
     @Body() createCartDto: CreateCartDto,
@@ -35,6 +36,7 @@ export class CartController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս տեսնել իր cart-ի բոլոր product-ները" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('getByUserId')
   async findOne(
@@ -51,6 +53,7 @@ export class CartController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս cart-ոում թարմացնել quantity-ին" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch('/:id')
   async update(
@@ -67,6 +70,7 @@ export class CartController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս ջնջել cart-ում  product-ը" })
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)

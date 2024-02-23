@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { ProductImagesService } from './product-images.service';
 import { CreateProductImageDto } from './dto/create-product-image.dto';
 import { UpdateProductImageDto } from './dto/update-product-image.dto';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { Role } from 'src/user/role/enum.role';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,9 +18,10 @@ export class ProductImagesController {
 
 
   @HttpCode(HttpStatus.OK)
-  // @HasRoles(Role.ADMIN)
-  // @ApiBearerAuth('JWT-auth')
-  // @UseGuards(AuthGuard('jwt'))
+  @HasRoles(Role.ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս product-ին նոր նկար ավելացնել" })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -56,6 +57,7 @@ export class ProductImagesController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս product-ից նկար ջնջել" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')

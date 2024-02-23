@@ -18,6 +18,7 @@ export class ProductController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս ավելացնել նոր product" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiConsumes('multipart/form-data')
@@ -70,6 +71,7 @@ export class ProductController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "hնարավորություն է տալիս ավելացնել բոլոր product-ին" })
   @Get()
   async findAll(@Res() res: Response) {
     try {
@@ -81,6 +83,7 @@ export class ProductController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "hնարավորություն է տալիս ֆիլտրել product-ը ըստ նշված դաշտերի" })
   @Get("/filter/by")
   async filterBy(
     @Query("page") page: number,
@@ -99,6 +102,7 @@ export class ProductController {
     }
   }
 
+  @ApiResponse({ description: "hնարավորություն է տալիս ptoduct-ի տվյալները ըստ id-ի, իր հետ բերելոբ նաև իր բոլոր product-ները" })
   @HttpCode(HttpStatus.OK)
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
@@ -113,6 +117,7 @@ export class ProductController {
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
   @ApiBearerAuth('JWT-auth')
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս թարմացնել product-ի տվյալները ըստ id-ի" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
@@ -121,6 +126,7 @@ export class ProductController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս ջնջել product-ի տվյալները" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')

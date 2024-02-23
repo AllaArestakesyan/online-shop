@@ -8,7 +8,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/upload/config';
 import { HasRoles } from './role/roles.decorator';
 import { Role } from './role/enum.role';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Verify } from './dto/verify.dto';
 import { ForgotPassword } from './dto/forgot-password';
@@ -22,6 +22,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "հնարավորություն է տալիս վերցնել բոլոր user-ի տվյալները" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   async findAll(@Request() req, @Res() res: Response) {
@@ -34,6 +35,7 @@ export class UserController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "գրանցվելիս հարկավոր է իրականացնել վերիֆիկացիա ըստ email, հարցմանը հարկավոր է ուղարկել 2 տվյալ email և emailToken, որը հարկավոր է վերցնել path-ից" })
   @Post("/verify")
   async verify(@Body() user: Verify, @Res() res: Response) {
     try {
@@ -47,6 +49,7 @@ export class UserController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "հնարավորություն է տալիս վերցնել user-ի տվյալները ըստ id-ի" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':id')
@@ -61,6 +64,7 @@ export class UserController {
 
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
+  @ApiResponse({ description: "հնարավորություն է տալիս փոփոխել user-ի password" })
   @UseGuards(AuthGuard('jwt'))
   @Patch('/us/changepassword')
   async changePassword(
@@ -79,6 +83,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: "հնարավորություն է տալիս լոգին եղած մարդուն փարմացնել գլխավոր նկարը" })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -109,6 +114,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'))
+  @ApiResponse({ description: "հնարավորություն է տալիս լոգին եղած մարդուն փոփոխել իր name-ը և email—ը" })
   @Patch('/us/updateData')
   async updateData(
     @Body() updateUserDto: UpdateUserDto,
@@ -123,6 +129,7 @@ export class UserController {
     }
   }
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "password մոռանալիս հնարավորություն է տալիս, այն վերականգնել, մուտքագրում է email-ը" })
   @Patch('/us/forgotPassword')
   async forgotPassword(
     @Body() forgotPassword: ForgotPassword,
@@ -136,7 +143,9 @@ export class UserController {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: e.message });
     }
   }
+
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "email-ում հարկավոր է ըստ լինքի ուղարկել email և code որի միջոցով ստուգում ենք եթե տվյալները համապատասխան են,\n\n և password  == confirmPassword, ապա password-ը փոխում է" })
   @Patch('/us/resetPassword/:email')
   async resetPassword(
     @Body() resetPassword: ResetPassword,
@@ -154,6 +163,7 @@ export class UserController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.USER)
+  @ApiResponse({ description: "հնարավորություն է տալիս ջնջել user-ին" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')

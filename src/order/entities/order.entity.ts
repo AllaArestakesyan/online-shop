@@ -19,6 +19,15 @@ export class Order {
     @Column()
     price: number;
 
+    @Column({ default: 0 })
+    status: number
+
+    @Column()
+    date: Date
+
+    @Column()
+    userId: number
+
     @ManyToOne(() => Product, (product) => product.order,
         { onDelete: "SET NULL", onUpdate: "SET NULL" })
     product: Product;
@@ -26,4 +35,8 @@ export class Order {
     @ManyToOne(() => User, (user) => user.order,
         { onDelete: "CASCADE", onUpdate: "CASCADE" })
     user: User;
+
+    @ManyToOne(() => ProductSize, (size) => size.order,
+        { onDelete: "CASCADE", onUpdate: "CASCADE" })
+    sizeId: ProductSize;
 }

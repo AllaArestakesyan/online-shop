@@ -109,7 +109,7 @@ export class ProductService {
       throw new NotFoundException('product not found');
     }
     if (product) {
-      const { colors, sizes, ...data }: any = updateProductDto;
+      const { sizes, ...data }: any = updateProductDto;
       await this.productRepository.update(id, { ...data })
       for (let e of sizes) {
         await this.productSizeService.create({ ...e }, product.id)

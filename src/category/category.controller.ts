@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, Res, HttpStatus, HttpCode, UseGuards, Request } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Response } from 'express';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { Role } from 'src/user/role/enum.role';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,6 +15,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) { }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "hնարավորություն է տալիս ավելացնել բոլոր category-ին" })
   @Get()
   async findAll(@Res() res: Response) {
     try {
@@ -26,6 +27,7 @@ export class CategoryController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @ApiResponse({ description: "hնարավորություն է տալիս category-ի տվյալները ըստ id-ի, իր հետ բերելոբ նաև իր բոլոր product-ները" })
   @Get(":id")
   async findOne(@Param("id") id: number, @Res() res: Response) {
     try {
@@ -38,6 +40,7 @@ export class CategoryController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս ավելացնել նոր category" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
@@ -54,6 +57,7 @@ export class CategoryController {
 
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս թարմացնել category-ի տվյալները ըստ id-ի" })
   @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch(":id")
@@ -69,6 +73,7 @@ export class CategoryController {
   @HttpCode(HttpStatus.OK)
   @HasRoles(Role.ADMIN)
   @ApiBearerAuth('JWT-auth')
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս ջնջել category-ի տվյալները" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: Response) {

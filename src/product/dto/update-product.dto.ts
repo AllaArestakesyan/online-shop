@@ -38,9 +38,6 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
     @ApiProperty()
     category: number;
 
-    @ApiProperty()
-    colors: string[];
-
     @ApiProperty({type:[Size]})
     sizes: Size[];
 }

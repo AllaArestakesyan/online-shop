@@ -184,7 +184,7 @@ export class UserService {
     }
     if (data.password === data.confirmationPassword) {
       if (user) {
-        this.usersRepository.update(
+       await this.usersRepository.update(
           { id: id },
           { password: bcrypt.hashSync(data.password, 10) },
         );

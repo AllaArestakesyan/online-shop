@@ -11,6 +11,7 @@ import { ProductSize } from 'src/product_size/entities/product_size.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Order, User, Product, Cart, ProductSize])],
   controllers: [OrderController],
-  providers: [OrderService]
+  providers: [OrderService],
+  exports :[OrderService]
 })
 export class OrderModule {}

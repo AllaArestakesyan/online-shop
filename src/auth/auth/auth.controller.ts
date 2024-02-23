@@ -1,7 +1,7 @@
 import { Controller, HttpCode, HttpStatus, Request, Get, Post, Body, Query, Res } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators/core';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/user/role/enum.role';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { AuthService } from './auth.service';
@@ -24,6 +24,10 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
+  @ApiResponse({
+    description:
+      'հարկավոր է մուտքագրել username և password, որպես պատասխան ստանում ենք access_token',
+  }) 
   @Post('login')
   async login(@Body() us: LoginUser, @Request() req) {
     return this.authService.login(req.user);
@@ -31,6 +35,9 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: CreateUserDto })
+  @ApiResponse({
+    description: `Գրանցվելիս տվյալ մարդու role-ը գրանվվում է որպես USER(0) `,
+  })
   @Post('register')
   async register(@Body() registerDto: RegisterDTO, @Res() res: Response) {
     try {
@@ -44,6 +51,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('JWT-auth')
+  @ApiResponse({
+    description:
+      'ըստ access_token -ի վերադարձնում է login եղած մարդու տվյալները',
+  })
   @Get('profile')
   async getProfile(@Request() req, @Res() res: Response) {
     try {

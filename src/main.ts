@@ -15,7 +15,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('OnlineShop example')
-    .setDescription('The Online Shop API description')
+    .setDescription(`Այստեղ user-ի համար ունենք 2 role -> ADMIN(1), USER(0)`)
     .setVersion('')
     .addBearerAuth(
       {

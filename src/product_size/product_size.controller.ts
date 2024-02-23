@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { ProductSizeService } from './product_size.service';
 import { CreateProductSizeDto } from './dto/create-product_size.dto';
 import { UpdateProductSizeDto } from './dto/update-product_size.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { Role } from 'src/user/role/enum.role';
 import { AuthGuard } from '@nestjs/passport';
@@ -15,9 +15,10 @@ export class ProductSizeController {
   constructor(private readonly productSizeService: ProductSizeService) { }
 
   @HttpCode(HttpStatus.OK)
-  // @HasRoles(Role.ADMIN)
-  // @ApiBearerAuth('JWT-auth')
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս product-ին նոր size ավելացնել" })
   @Post(":productId")
   async create(@Body() createProductSizeDto: CreateProductSizeDto,
     @Request() req,
@@ -44,9 +45,10 @@ export class ProductSizeController {
   // }
 
   @HttpCode(HttpStatus.OK)
-  // @HasRoles(Role.ADMIN)
-  // @ApiBearerAuth('JWT-auth')
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս product-ի size-ը փոփոխել" })
   @Patch(':id')
   async update(@Param('id') id: string,
     @Body() updateProductSizeDto: UpdateProductSizeDto,
@@ -61,9 +63,10 @@ export class ProductSizeController {
   }
 
   @HttpCode(HttpStatus.OK)
-  // @HasRoles(Role.ADMIN)
-  // @ApiBearerAuth('JWT-auth')
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @HasRoles(Role.ADMIN)
+  @ApiBearerAuth('JWT-auth')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "admin-ին հնարավորություն է տալիս product-ից size ջնջել" })
   @Delete(':id')
   async remove(@Param('id') id: string,
     @Request() req,

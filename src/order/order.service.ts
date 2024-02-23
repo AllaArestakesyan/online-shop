@@ -25,43 +25,43 @@ export class OrderService {
 
   ) { }
 
-  async create(createOrderDto: CreateOrderDto, userId: number) {
-    const { cartId }: any = createOrderDto;
-    const user = await this.userRepository.findOneBy({ id: userId });
-    const cart = await this.cartRepository.findOne({
-      where: { id: cartId },
-      relations: {
-        product: true,
-        size: true,
-        user: true,
-      }
-    });
-    if (user && cart) {
-      const product = await this.productRepository.findOne({
-        where: { id: cart.product.id }
-      });
-      if (product && cart.user.id == user.id) {
-        const order = this.orderRepository.create({
-          product,
-          user,
-          quantity: cart.quantity,
-          size: cart.size.size,
-          price: cart.price,
-        });
-        await this.orderRepository.save(order);
-        await this.productSizeRepository.update({ id: cart.size.id }, {
-          count: cart.size.count - cart.quantity
-        })
-        await this.cartRepository.delete({ id: cart.id });
-        return "add order"
-      } else {
-        throw new NotFoundException('data is incorrect');
-      }
-    } else {
-      throw new NotFoundException('user or cart not found');
-    }
-  }
-
+  // async create(createOrderDto: CreateOrderDto, userId: number) {
+  //   const { cartId }: any = createOrderDto;
+  //   const user = await this.userRepository.findOneBy({ id: userId });
+  //   const cart = await this.cartRepository.findOne({
+  //     where: { id: cartId },
+  //     relations: {
+  //       product: true,
+  //       size: true,
+  //       user: true,
+  //     }
+  //   });
+  //   if (user && cart) {
+  //     const product = await this.productRepository.findOne({
+  //       where: { id: cart.product.id }
+  //     });
+  //     if (product && cart.user.id == user.id) {
+  //       const order = this.orderRepository.create({
+  //         product,
+  //         user,
+  //         quantity: cart.quantity,
+  //         size: cart.size.size,
+  //         price: cart.product.price,
+  //       });
+  //       await this.orderRepository.save(order);
+  //       await this.productSizeRepository.update({ id: cart.size.id }, {
+  //         count: cart.size.count - cart.quantity
+  //       })
+  //       await this.cartRepository.delete({ id: cart.id });
+  //       return "add order"
+  //     } else {
+  //       throw new NotFoundException('data is incorrect');
+  //     }
+  //   } else {
+  //     throw new NotFoundException('user or cart not found');
+  //   }
+  // }
+  
   async findOne(id: number) {
     const user = await this.userRepository.findOneBy({ id });
     if (user) {
@@ -70,7 +70,8 @@ export class OrderService {
           user
         },
         relations: {
-          product: true
+          product: true,
+          sizeId:true
         }
       });
     } else {

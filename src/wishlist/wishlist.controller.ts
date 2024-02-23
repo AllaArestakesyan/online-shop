@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { WishlistService } from './wishlist.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HasRoles } from 'src/user/role/roles.decorator';
 import { Role } from 'src/user/role/enum.role';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,6 +18,7 @@ export class WishlistController {
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս product հավանել" })
   @Post()
   async create(
     @Body() createWishlistDto: CreateWishlistDto,
@@ -35,6 +36,7 @@ export class WishlistController {
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
   @HasRoles(Role.USER)
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս տեսնել իր բոլոր հավանած product-ները" })
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('getByUserId')
   async findOne(
@@ -51,6 +53,7 @@ export class WishlistController {
 
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth('JWT-auth')
+  @ApiResponse({ description: "user-ին հնարավորություն է տալիս ջնջել հավանած product-ը" })
   @HasRoles(Role.USER)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Delete(':id')

@@ -51,32 +51,6 @@ import { Brand } from './brand/entities/brand.entity';
         },
       },
     }),
-    // StripeModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService):Promise<any> => ({
-    //     apiKey: configService.get<string>('pk_test_51HWiPKCJWPBoW4PKzJ7ijn7rwOyMwDS85W72lRZvfxlFopZ34FcxT4y4gUpHL0vaKSMYBudrTntFgneRxTSo6ZSd00AkG05TnC'),
-    //     options: {
-    //       apiVersion: '2020-09-29',
-    //     },
-    //   }),
-    // }),
-
-    
-    // StripeModule.forRoot({
-    //   apiKey: 'sk_test_51OWwB0JvDs4Tc5XZ2oLGwVOOJNcvj8SfMn81r3GH1l4JqnTbXKZwsLL6Y5o4jVUZFkoiVexBQkKg5dce1FVAQ5On00F76XFefy',
-    //   apiVersion: '2023-10-16',
-    // }),
-
-
-    // StripeModule.forRootAsync({
-    //   inject: [ConfigService],
-    //   useFactory: (configService: ConfigService):any => ({
-    //     apiKey: configService.get('sk_test_51OWwB0JvDs4Tc5XZ2oLGwVOOJNcvj8SfMn81r3GH1l4JqnTbXKZwsLL6Y5o4jVUZFkoiVexBQkKg5dce1FVAQ5On00F76XFefy'),
-    //     apiVersion: '2023-10-16',
-    //   }),
-    // }),
-
-    // PaymentModule.forRootAsync(),
     AuthModule,
     UserModule,
     BrandModule,
